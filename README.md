@@ -1,6 +1,12 @@
 # lit-google-map
 
-This project is port of [google-map](https://www.webcomponents.org/element/GoogleWebComponents/google-map) webcomponent based on [Lit v2](https://lit.dev/) library.
+2023-08-10:
+
+- Forked from [arkadiuszwojcik/lit-google-map](https://github.com/arkadiuszwojcik/lit-google-map)
+- Add prettier and eslint
+- Audit fix
+- Update default version
+- Add possibility to disable default ui
 
 ## Table of contents
 
