@@ -90,34 +90,35 @@
             return ScriptLoaderMap.instance;
         }
         nameFromUrl(url) {
-            return url.replace(/[\:\/\%\?\&\.\=\-\,]/g, '_') + '_api';
+            return url.replace(/[\:\/\%\?\&\.\=\-\,]/g, "_") + "_api";
         }
     }
     class ScriptLoader {
         constructor(name, url, callbackName) {
-            this.callbackMacro = '%%callback%%';
+            this.callbackMacro = "%%callback%%";
             this.loaded = false;
             this.script = null;
             this.notifiers = [];
             if (!callbackName) {
                 if (url.indexOf(this.callbackMacro) >= 0) {
-                    callbackName = name + '_loaded';
+                    callbackName = name + "_loaded";
                     url = url.replace(this.callbackMacro, callbackName);
                 }
                 else {
-                    console.error('ScriptLoader class: a %%callback%% parameter is required in libraryUrl');
+                    console.error("ScriptLoader class: a %%callback%% parameter is required in libraryUrl");
                     return;
                 }
             }
             this.callbackName = callbackName;
-            window[this.callbackName] = this.success.bind(this);
+            window[this.callbackName] =
+                this.success.bind(this);
             this.addScript(url);
         }
         addScript(src) {
-            var script = document.createElement('script');
+            var script = document.createElement("script");
             script.src = src;
             script.onerror = this.handleError.bind(this);
-            var s = document.querySelector('script') || document.body;
+            var s = document.querySelector("script") || document.body;
             s.parentNode.insertBefore(script, s);
             this.script = script;
         }
@@ -128,7 +129,7 @@
             this.script = null;
         }
         handleError(ev) {
-            this.error = new Error('Library failed to load');
+            this.error = new Error("Library failed to load");
             this.notifyAll();
             this.cleanup();
         }
@@ -173,7 +174,7 @@
         }
         libraryLoadCallback(error, detail) {
             if (error) {
-                console.warn('Library load failed:', error.message);
+                console.warn("Library load failed:", error.message);
                 this.libraryErrorMessage = error.message;
             }
             else {
@@ -197,53 +198,53 @@
     exports.LitGoogleMapsApi = class LitGoogleMapsApi extends JsonpLibraryElement {
         constructor() {
             super(...arguments);
-            this.apiKey = '';
-            this.clientId = '';
-            this.mapsUrl = 'https://maps.googleapis.com/maps/api/js?callback=%%callback%%';
-            this.version = '3.39';
-            this.language = '';
-            this.mapId = '';
+            this.apiKey = "";
+            this.clientId = "";
+            this.mapsUrl = "https://maps.googleapis.com/maps/api/js?callback=%%callback%%";
+            this.version = "3.39";
+            this.language = "";
+            this.mapId = "";
         }
         get libraryUrl() {
             return this.computeUrl(this.mapsUrl, this.version, this.apiKey, this.clientId, this.language, this.mapId);
         }
         get notifyEvent() {
-            return 'api-load';
+            return "api-load";
         }
         computeUrl(mapsUrl, version, apiKey, clientId, language, mapId) {
-            var url = mapsUrl + '&v=' + version;
-            url += '&libraries=drawing,geometry,places,visualization';
+            var url = mapsUrl + "&v=" + version;
+            url += "&libraries=drawing,geometry,places,visualization";
             if (apiKey && !clientId) {
-                url += '&key=' + apiKey;
+                url += "&key=" + apiKey;
             }
             if (clientId) {
-                url += '&client=' + clientId;
+                url += "&client=" + clientId;
             }
             if (!apiKey && !clientId) {
-                var warning = 'No Google Maps API Key or Client ID specified. ' +
-                    'See https://developers.google.com/maps/documentation/javascript/get-api-key ' +
-                    'for instructions to get started with a key or client id.';
+                var warning = "No Google Maps API Key or Client ID specified. " +
+                    "See https://developers.google.com/maps/documentation/javascript/get-api-key " +
+                    "for instructions to get started with a key or client id.";
                 console.warn(warning);
             }
             if (language) {
-                url += '&language=' + language;
+                url += "&language=" + language;
             }
             if (mapId) {
-                url += '&map_ids=' + mapId;
+                url += "&map_ids=" + mapId;
             }
             return url;
         }
     };
     __decorate([
-        e({ type: String, attribute: 'api-key' }),
+        e({ type: String, attribute: "api-key" }),
         __metadata("design:type", Object)
     ], exports.LitGoogleMapsApi.prototype, "apiKey", void 0);
     __decorate([
-        e({ type: String, attribute: 'client-id' }),
+        e({ type: String, attribute: "client-id" }),
         __metadata("design:type", Object)
     ], exports.LitGoogleMapsApi.prototype, "clientId", void 0);
     __decorate([
-        e({ type: String, attribute: 'maps-url' }),
+        e({ type: String, attribute: "maps-url" }),
         __metadata("design:type", Object)
     ], exports.LitGoogleMapsApi.prototype, "mapsUrl", void 0);
     __decorate([
@@ -255,11 +256,11 @@
         __metadata("design:type", Object)
     ], exports.LitGoogleMapsApi.prototype, "language", void 0);
     __decorate([
-        e({ type: String, attribute: 'map-id' }),
+        e({ type: String, attribute: "map-id" }),
         __metadata("design:type", Object)
     ], exports.LitGoogleMapsApi.prototype, "mapId", void 0);
     exports.LitGoogleMapsApi = __decorate([
-        n$1('lit-google-maps-api')
+        n$1("lit-google-maps-api")
     ], exports.LitGoogleMapsApi);
 
     exports.LitGoogleMapMarker = class LitGoogleMapMarker extends s {
@@ -278,23 +279,23 @@
             var _a, _b;
             super.attributeChangedCallback(name, oldval, newval);
             switch (name) {
-                case 'open': {
+                case "open": {
                     this.openChanged();
                     break;
                 }
-                case 'latitude': {
+                case "latitude": {
                     this.updatePosition();
                     break;
                 }
-                case 'longitude': {
+                case "longitude": {
                     this.updatePosition();
                     break;
                 }
-                case 'label': {
+                case "label": {
                     (_a = this.marker) === null || _a === void 0 ? void 0 : _a.setLabel(this.label);
                     break;
                 }
-                case 'z-index': {
+                case "z-index": {
                     (_b = this.marker) === null || _b === void 0 ? void 0 : _b.setZIndex(this.zIndex);
                     break;
                 }
@@ -305,11 +306,11 @@
                 return;
             if (this.open) {
                 this.info.open(this.map, this.marker);
-                this.dispatchEvent(new CustomEvent('google-map-marker-open', { bubbles: true }));
+                this.dispatchEvent(new CustomEvent("google-map-marker-open", { bubbles: true }));
             }
             else {
                 this.info.close();
-                this.dispatchEvent(new CustomEvent('google-map-marker-close', { bubbles: true }));
+                this.dispatchEvent(new CustomEvent("google-map-marker-close", { bubbles: true }));
             }
         }
         updatePosition() {
@@ -335,10 +336,10 @@
                 icon: this.icon,
                 position: {
                     lat: this.latitude,
-                    lng: this.longitude
+                    lng: this.longitude,
                 },
                 label: this.label,
-                zIndex: this.zIndex
+                zIndex: this.zIndex,
             });
             this.contentChanged();
         }
@@ -348,16 +349,16 @@
             this.contentObserver = new MutationObserver(this.contentChanged.bind(this));
             this.contentObserver.observe(this, {
                 childList: true,
-                subtree: true
+                subtree: true,
             });
             var content = this.innerHTML.trim();
             if (content) {
                 if (!this.info) {
                     this.info = new google.maps.InfoWindow();
-                    this.openInfoHandler = google.maps.event.addListener(this.marker, 'click', function () {
+                    this.openInfoHandler = google.maps.event.addListener(this.marker, "click", function () {
                         this.open = true;
                     }.bind(this));
-                    this.closeInfoHandler = google.maps.event.addListener(this.info, 'closeclick', function () {
+                    this.closeInfoHandler = google.maps.event.addListener(this.info, "closeclick", function () {
                         this.open = false;
                     }.bind(this));
                 }
@@ -385,7 +386,7 @@
         __metadata("design:type", String)
     ], exports.LitGoogleMapMarker.prototype, "label", void 0);
     __decorate([
-        e({ type: Number, reflect: true, attribute: 'z-index' }),
+        e({ type: Number, reflect: true, attribute: "z-index" }),
         __metadata("design:type", Number)
     ], exports.LitGoogleMapMarker.prototype, "zIndex", void 0);
     __decorate([
@@ -397,7 +398,7 @@
         __metadata("design:type", String)
     ], exports.LitGoogleMapMarker.prototype, "icon", void 0);
     exports.LitGoogleMapMarker = __decorate([
-        n$1('lit-google-map-marker')
+        n$1("lit-google-map-marker")
     ], exports.LitGoogleMapMarker);
 
     exports.LitGoogleMapCircle = class LitGoogleMapCircle extends s {
@@ -406,9 +407,9 @@
             this.centerLatitude = -34.397;
             this.centerLongitude = 150.644;
             this.radius = 100000;
-            this.fillColor = '#FF0000';
+            this.fillColor = "#FF0000";
             this.fillOpacity = 0.35;
-            this.strokeColor = '#FF0000';
+            this.strokeColor = "#FF0000";
             this.strokeOpacity = 0.8;
             this.strokeWeight = 2;
             this.map = null;
@@ -418,15 +419,15 @@
             var _a;
             super.attributeChangedCallback(name, oldval, newval);
             switch (name) {
-                case 'center-latitude': {
+                case "center-latitude": {
                     this.updateCenter();
                     break;
                 }
-                case 'center-longitude': {
+                case "center-longitude": {
                     this.updateCenter();
                     break;
                 }
-                case 'radius': {
+                case "radius": {
                     (_a = this.circle) === null || _a === void 0 ? void 0 : _a.setRadius(this.radius);
                     break;
                 }
@@ -459,18 +460,18 @@
                 fillOpacity: this.fillOpacity,
                 center: {
                     lat: this.centerLatitude,
-                    lng: this.centerLongitude
+                    lng: this.centerLongitude,
                 },
-                radius: this.radius
+                radius: this.radius,
             });
         }
     };
     __decorate([
-        e({ type: Number, attribute: 'center-latitude' }),
+        e({ type: Number, attribute: "center-latitude" }),
         __metadata("design:type", Number)
     ], exports.LitGoogleMapCircle.prototype, "centerLatitude", void 0);
     __decorate([
-        e({ type: Number, attribute: 'center-longitude' }),
+        e({ type: Number, attribute: "center-longitude" }),
         __metadata("design:type", Number)
     ], exports.LitGoogleMapCircle.prototype, "centerLongitude", void 0);
     __decorate([
@@ -478,36 +479,36 @@
         __metadata("design:type", Number)
     ], exports.LitGoogleMapCircle.prototype, "radius", void 0);
     __decorate([
-        e({ type: String, attribute: 'fill-color' }),
+        e({ type: String, attribute: "fill-color" }),
         __metadata("design:type", String)
     ], exports.LitGoogleMapCircle.prototype, "fillColor", void 0);
     __decorate([
-        e({ type: Number, attribute: 'fill-opacity' }),
+        e({ type: Number, attribute: "fill-opacity" }),
         __metadata("design:type", Number)
     ], exports.LitGoogleMapCircle.prototype, "fillOpacity", void 0);
     __decorate([
-        e({ type: String, attribute: 'stroke-color' }),
+        e({ type: String, attribute: "stroke-color" }),
         __metadata("design:type", String)
     ], exports.LitGoogleMapCircle.prototype, "strokeColor", void 0);
     __decorate([
-        e({ type: Number, attribute: 'stroke-opacity' }),
+        e({ type: Number, attribute: "stroke-opacity" }),
         __metadata("design:type", Number)
     ], exports.LitGoogleMapCircle.prototype, "strokeOpacity", void 0);
     __decorate([
-        e({ type: Number, attribute: 'stroke-weight' }),
+        e({ type: Number, attribute: "stroke-weight" }),
         __metadata("design:type", Number)
     ], exports.LitGoogleMapCircle.prototype, "strokeWeight", void 0);
     exports.LitGoogleMapCircle = __decorate([
-        n$1('lit-google-map-circle')
+        n$1("lit-google-map-circle")
     ], exports.LitGoogleMapCircle);
 
     exports.LitGoogleMapPolygon = class LitGoogleMapPolygon extends s {
         constructor() {
             super(...arguments);
             this.paths = [];
-            this.fillColor = '#FF0000';
+            this.fillColor = "#FF0000";
             this.fillOpacity = 0.35;
-            this.strokeColor = '#FF0000';
+            this.strokeColor = "#FF0000";
             this.strokeOpacity = 0.8;
             this.strokeWeight = 2;
             this.map = null;
@@ -534,7 +535,7 @@
                 strokeWeight: this.strokeWeight,
                 fillColor: this.fillColor,
                 fillOpacity: this.fillOpacity,
-                paths: this.paths
+                paths: this.paths,
             });
         }
     };
@@ -543,53 +544,54 @@
         __metadata("design:type", Array)
     ], exports.LitGoogleMapPolygon.prototype, "paths", void 0);
     __decorate([
-        e({ type: String, attribute: 'fill-color' }),
+        e({ type: String, attribute: "fill-color" }),
         __metadata("design:type", String)
     ], exports.LitGoogleMapPolygon.prototype, "fillColor", void 0);
     __decorate([
-        e({ type: Number, attribute: 'fill-opacity' }),
+        e({ type: Number, attribute: "fill-opacity" }),
         __metadata("design:type", Number)
     ], exports.LitGoogleMapPolygon.prototype, "fillOpacity", void 0);
     __decorate([
-        e({ type: String, attribute: 'stroke-color' }),
+        e({ type: String, attribute: "stroke-color" }),
         __metadata("design:type", String)
     ], exports.LitGoogleMapPolygon.prototype, "strokeColor", void 0);
     __decorate([
-        e({ type: Number, attribute: 'stroke-opacity' }),
+        e({ type: Number, attribute: "stroke-opacity" }),
         __metadata("design:type", Number)
     ], exports.LitGoogleMapPolygon.prototype, "strokeOpacity", void 0);
     __decorate([
-        e({ type: Number, attribute: 'stroke-weight' }),
+        e({ type: Number, attribute: "stroke-weight" }),
         __metadata("design:type", Number)
     ], exports.LitGoogleMapPolygon.prototype, "strokeWeight", void 0);
     exports.LitGoogleMapPolygon = __decorate([
-        n$1('lit-google-map-polygon')
+        n$1("lit-google-map-polygon")
     ], exports.LitGoogleMapPolygon);
 
     exports.LitGoogleMap = class LitGoogleMap extends s {
         constructor() {
             super(...arguments);
-            this.apiKey = '';
-            this.version = '3.48';
+            this.apiKey = "";
+            this.version = "3.52";
             this.styles = {};
             this.zoom = 8;
             this.fitToMarkers = false;
-            this.mapType = 'roadmap';
+            this.mapType = "roadmap";
             this.centerLatitude = -34.397;
             this.centerLongitude = 150.644;
-            this.language = '';
-            this.mapId = '';
+            this.language = "";
+            this.mapId = "";
+            this.disableDefaultUI = false;
             this.map = null;
         }
         initGMap() {
             if (this.map != null) {
                 return;
             }
-            var gMapApiElement = this.shadowRoot.getElementById('api');
+            const gMapApiElement = this.shadowRoot.getElementById("api");
             if (gMapApiElement == null || gMapApiElement.libraryLoaded != true) {
                 return;
             }
-            this.map = new google.maps.Map(this.shadowRoot.getElementById('map'), this.getMapOptions());
+            this.map = new google.maps.Map(this.shadowRoot.getElementById("map"), this.getMapOptions());
             this.updateMarkers();
             this.updateShapes();
         }
@@ -599,7 +601,8 @@
                 center: { lat: this.centerLatitude, lng: this.centerLongitude },
                 mapTypeId: this.mapType,
                 styles: this.styles,
-                mapId: this.mapId
+                mapId: this.mapId,
+                disableDefaultUI: this.disableDefaultUI,
             };
         }
         mapApiLoaded() {
@@ -611,7 +614,7 @@
         }
         attachChildrenToMap(children) {
             if (this.map) {
-                for (let child of children) {
+                for (const child of children) {
                     child.changeMap(this.map);
                 }
             }
@@ -619,17 +622,19 @@
         observeMarkers() {
             if (this.markerObserverSet)
                 return;
-            this.addEventListener("selector-items-changed", event => { this.updateMarkers(); });
+            this.addEventListener("selector-items-changed", (_event) => {
+                this.updateMarkers();
+            });
             this.markerObserverSet = true;
         }
         updateMarkers() {
             this.observeMarkers();
-            var markersSelector = this.shadowRoot.getElementById("markers-selector");
+            const markersSelector = this.shadowRoot.getElementById("markers-selector");
             if (!markersSelector)
                 return;
-            var newMarkers = markersSelector.items;
+            const newMarkers = markersSelector.items;
             if (this.markers && newMarkers.length === this.markers.length) {
-                var added = newMarkers.filter(m => {
+                const added = newMarkers.filter((m) => {
                     return this.markers && this.markers.indexOf(m) === -1;
                 });
                 if (added.length == 0)
@@ -642,18 +647,18 @@
             }
         }
         updateShapes() {
-            var shapesSelector = this.shadowRoot.getElementById("shapes-selector");
+            const shapesSelector = this.shadowRoot.getElementById("shapes-selector");
             if (!shapesSelector)
                 return;
             this.shapes = shapesSelector.items;
-            for (let s of this.shapes) {
-                s.attachToMap(this.map);
+            for (const shape of this.shapes) {
+                shape.attachToMap(this.map);
             }
         }
         fitToMarkersChanged() {
             if (this.map && this.fitToMarkers && this.markers.length > 0) {
-                var latLngBounds = new google.maps.LatLngBounds();
-                for (var marker of this.markers) {
+                const latLngBounds = new google.maps.LatLngBounds();
+                for (const marker of this.markers) {
                     latLngBounds.extend(new google.maps.LatLng(marker.latitude, marker.longitude));
                 }
                 if (this.markers.length > 1) {
@@ -662,47 +667,47 @@
                 this.map.setCenter(latLngBounds.getCenter());
             }
         }
-        deselectMarker(event) {
-        }
-        deselectShape(event) {
-        }
+        deselectMarker(_event) { }
+        deselectShape(_event) { }
         render() {
             return $ `
-            <lit-google-maps-api 
-                id="api" 
-                api-key="${this.apiKey}" 
-                version="${this.version}"
-                language="${this.language}"
-                map-id="${this.mapId}"
-                @api-load=${() => this.mapApiLoaded()}>
-            </lit-google-maps-api>
-            <lit-selector 
-                id="markers-selector"
-                selected-attribute="open"
-                activate-event="google-map-marker-open"
-                @google-map-marker-close=${(e) => this.deselectMarker(e)}>
-                    <slot id="markers" name="markers"></slot>
-            </lit-selector>
-            <lit-selector 
-                id="shapes-selector"
-                selected-attribute="open"
-                activate-event="google-map-shape-open"
-                @google-map-shape-close=${(e) => this.deselectShape(e)}>
-                    <slot id="shapes" name="shapes"></slot>
-            </lit-selector>
-            <div id="map">
-            </div>
-        `;
+      <lit-google-maps-api
+        id="api"
+        api-key="${this.apiKey}"
+        version="${this.version}"
+        language="${this.language}"
+        map-id="${this.mapId}"
+        @api-load=${() => this.mapApiLoaded()}
+      >
+      </lit-google-maps-api>
+      <lit-selector
+        id="markers-selector"
+        selected-attribute="open"
+        activate-event="google-map-marker-open"
+        @google-map-marker-close=${(e) => this.deselectMarker(e)}
+      >
+        <slot id="markers" name="markers"></slot>
+      </lit-selector>
+      <lit-selector
+        id="shapes-selector"
+        selected-attribute="open"
+        activate-event="google-map-shape-open"
+        @google-map-shape-close=${(e) => this.deselectShape(e)}
+      >
+        <slot id="shapes" name="shapes"></slot>
+      </lit-selector>
+      <div id="map"></div>
+    `;
         }
     };
     exports.LitGoogleMap.styles = r$2 `
-        #map {
-            width: 100%;
-            height: 100%;
-        }
-    `;
+    #map {
+      width: 100%;
+      height: 100%;
+    }
+  `;
     __decorate([
-        e({ type: String, attribute: 'api-key' }),
+        e({ type: String, attribute: "api-key" }),
         __metadata("design:type", String)
     ], exports.LitGoogleMap.prototype, "apiKey", void 0);
     __decorate([
@@ -718,19 +723,19 @@
         __metadata("design:type", Number)
     ], exports.LitGoogleMap.prototype, "zoom", void 0);
     __decorate([
-        e({ type: Boolean, attribute: 'fit-to-markers' }),
+        e({ type: Boolean, attribute: "fit-to-markers" }),
         __metadata("design:type", Boolean)
     ], exports.LitGoogleMap.prototype, "fitToMarkers", void 0);
     __decorate([
-        e({ type: String, attribute: 'map-type' }),
+        e({ type: String, attribute: "map-type" }),
         __metadata("design:type", String)
     ], exports.LitGoogleMap.prototype, "mapType", void 0);
     __decorate([
-        e({ type: Number, attribute: 'center-latitude' }),
+        e({ type: Number, attribute: "center-latitude" }),
         __metadata("design:type", Number)
     ], exports.LitGoogleMap.prototype, "centerLatitude", void 0);
     __decorate([
-        e({ type: Number, attribute: 'center-longitude' }),
+        e({ type: Number, attribute: "center-longitude" }),
         __metadata("design:type", Number)
     ], exports.LitGoogleMap.prototype, "centerLongitude", void 0);
     __decorate([
@@ -738,11 +743,15 @@
         __metadata("design:type", String)
     ], exports.LitGoogleMap.prototype, "language", void 0);
     __decorate([
-        e({ type: String, attribute: 'map-id' }),
+        e({ type: String, attribute: "map-id" }),
         __metadata("design:type", String)
     ], exports.LitGoogleMap.prototype, "mapId", void 0);
+    __decorate([
+        e({ type: Boolean, attribute: "disable-default-ui" }),
+        __metadata("design:type", Object)
+    ], exports.LitGoogleMap.prototype, "disableDefaultUI", void 0);
     exports.LitGoogleMap = __decorate([
-        n$1('lit-google-map')
+        n$1("lit-google-map")
     ], exports.LitGoogleMap);
 
     class XSelection {
@@ -755,7 +764,7 @@
             return this.multi ? this.selection.slice() : this.selection[0];
         }
         clear(excludes) {
-            this.selection.slice().forEach(item => {
+            this.selection.slice().forEach((item) => {
                 if (!excludes || excludes.indexOf(item) < 0)
                     this.setItemSelected(item, false);
             });
@@ -796,7 +805,7 @@
     exports.LitSelector = class LitSelector extends s {
         constructor() {
             super(...arguments);
-            this.activateEvent = 'tap';
+            this.activateEvent = "tap";
             this.selectedAttribute = null;
             this.selected = null;
             this._selection = new XSelection((item, isSelected) => this.applySelection(item, isSelected));
@@ -807,10 +816,13 @@
         }
         connectedCallback() {
             super.connectedCallback();
-            this.addEventListener('slotchange', event => {
+            this.addEventListener("slotchange", (event) => {
                 event.stopPropagation();
                 this.updateItems();
-                this.dispatchEvent(new CustomEvent("selector-items-changed", { detail: {}, composed: true }));
+                this.dispatchEvent(new CustomEvent("selector-items-changed", {
+                    detail: {},
+                    composed: true,
+                }));
             });
             this.addListener(this.activateEvent);
         }
@@ -821,7 +833,7 @@
         attributeChangedCallback(name, oldval, newval) {
             super.attributeChangedCallback(name, oldval, newval);
             switch (name) {
-                case 'selected': {
+                case "selected": {
                     this.updateSelected();
                     break;
                 }
@@ -858,7 +870,11 @@
             }
         }
         itemActivate(value, item) {
-            if (this.dispatchEvent(new CustomEvent('selector-item-activate', { detail: { selected: value, item: item }, composed: true, cancelable: true })))
+            if (this.dispatchEvent(new CustomEvent("selector-item-activate", {
+                detail: { selected: value, item: item },
+                composed: true,
+                cancelable: true,
+            })))
                 this.select(value);
         }
         select(value) {
@@ -879,7 +895,7 @@
             }
         }
         valueToItem(value) {
-            return (value == null) ? null : this._items[this.valueToIndex(value)];
+            return value == null ? null : this._items[this.valueToIndex(value)];
         }
         valueToIndex(value) {
             return Number(value);
@@ -892,11 +908,11 @@
         }
     };
     __decorate([
-        e({ type: String, attribute: 'activate-event' }),
+        e({ type: String, attribute: "activate-event" }),
         __metadata("design:type", String)
     ], exports.LitSelector.prototype, "activateEvent", void 0);
     __decorate([
-        e({ type: String, attribute: 'selected-attribute' }),
+        e({ type: String, attribute: "selected-attribute" }),
         __metadata("design:type", String)
     ], exports.LitSelector.prototype, "selectedAttribute", void 0);
     __decorate([
@@ -904,7 +920,7 @@
         __metadata("design:type", Object)
     ], exports.LitSelector.prototype, "selected", void 0);
     exports.LitSelector = __decorate([
-        n$1('lit-selector')
+        n$1("lit-selector")
     ], exports.LitSelector);
 
     Object.defineProperty(exports, '__esModule', { value: true });
