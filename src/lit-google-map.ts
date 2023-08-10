@@ -18,7 +18,7 @@ export class LitGoogleMap extends LitElement {
      * Version of the Google Maps API to use.
      */
     @property({type : String})
-    version: string = '3.48';
+    version: string = '3.52';
 
     /**
      * If set, custom styles can be applied to the map.
