@@ -18,5 +18,7 @@ module.exports = {
   plugins: ["@typescript-eslint", "lit"],
   rules: {
     "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
+    "no-extra-semi": "off",
   },
 }

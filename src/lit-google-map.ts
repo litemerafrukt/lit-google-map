@@ -1,7 +1,7 @@
-import { LitElement, html, css } from "lit"
+import { LitElement, css, html } from "lit"
 import { customElement, property } from "lit/decorators.js"
-import { LitGoogleMapsApi } from "./lit-google-maps-api"
 import { LitGoogleMapMarker } from "./lit-google-map-marker"
+import { LitGoogleMapsApi } from "./lit-google-maps-api"
 import { LitSelector } from "./lit-selector"
 import { Shape } from "./shape"
 
@@ -56,6 +56,9 @@ export class LitGoogleMap extends LitElement {
   @property({ type: String, attribute: "map-id" })
   mapId: string = ""
 
+  @property({ type: Boolean, attribute: "disable-default-ui" })
+  disableDefaultUI = false
+
   map: google.maps.Map = null
 
   markers: Array<Node>
@@ -68,7 +71,7 @@ export class LitGoogleMap extends LitElement {
       return // already initialized
     }
 
-    var gMapApiElement = this.shadowRoot.getElementById(
+    const gMapApiElement = this.shadowRoot.getElementById(
       "api",
     ) as LitGoogleMapsApi
 
@@ -90,9 +93,9 @@ export class LitGoogleMap extends LitElement {
       zoom: this.zoom,
       center: { lat: this.centerLatitude, lng: this.centerLongitude },
       mapTypeId: this.mapType,
-      // @ts-ignore
-      styles: this.styles,
+      styles: this.styles as google.maps.MapTypeStyle[],
       mapId: this.mapId,
+      disableDefaultUI: this.disableDefaultUI,
     }
   }
 
@@ -108,7 +111,7 @@ export class LitGoogleMap extends LitElement {
 
   attachChildrenToMap(children: Array<Node>) {
     if (this.map) {
-      for (let child of children) {
+      for (const child of children) {
         ;(child as LitGoogleMapMarker).changeMap(this.map)
       }
     }
@@ -117,7 +120,7 @@ export class LitGoogleMap extends LitElement {
   observeMarkers() {
     if (this.markerObserverSet) return
 
-    this.addEventListener("selector-items-changed", (event) => {
+    this.addEventListener("selector-items-changed", (_event) => {
       this.updateMarkers()
     })
     this.markerObserverSet = true
@@ -126,16 +129,16 @@ export class LitGoogleMap extends LitElement {
   updateMarkers() {
     this.observeMarkers()
 
-    var markersSelector = this.shadowRoot.getElementById(
+    const markersSelector = this.shadowRoot.getElementById(
       "markers-selector",
     ) as LitSelector
     if (!markersSelector) return
 
-    var newMarkers = markersSelector.items
+    const newMarkers = markersSelector.items
 
     // do not recompute if markers have not been added or removed
     if (this.markers && newMarkers.length === this.markers.length) {
-      var added = newMarkers.filter((m) => {
+      const added = newMarkers.filter((m) => {
         return this.markers && this.markers.indexOf(m) === -1
       })
       if (added.length == 0) return
@@ -151,22 +154,22 @@ export class LitGoogleMap extends LitElement {
   }
 
   updateShapes() {
-    var shapesSelector = this.shadowRoot.getElementById(
+    const shapesSelector = this.shadowRoot.getElementById(
       "shapes-selector",
     ) as LitSelector
     if (!shapesSelector) return
 
     this.shapes = shapesSelector.items
 
-    for (let s of this.shapes) {
-      ;(s as unknown as Shape).attachToMap(this.map)
+    for (const shape of this.shapes) {
+      ;(shape as unknown as Shape).attachToMap(this.map)
     }
   }
 
   fitToMarkersChanged() {
     if (this.map && this.fitToMarkers && this.markers.length > 0) {
-      var latLngBounds = new google.maps.LatLngBounds()
-      for (var marker of this.markers) {
+      const latLngBounds = new google.maps.LatLngBounds()
+      for (const marker of this.markers) {
         latLngBounds.extend(
           new google.maps.LatLng(
             (marker as LitGoogleMapMarker).latitude,
@@ -184,9 +187,9 @@ export class LitGoogleMap extends LitElement {
     }
   }
 
-  deselectMarker(event: Event) {}
+  deselectMarker(_event: Event) {}
 
-  deselectShape(event: Event) {}
+  deselectShape(_event: Event) {}
 
   static styles = css`
     #map {
