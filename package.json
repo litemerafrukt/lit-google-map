@@ -1,16 +1,17 @@
 {
-  "name": "lit-google-map",
+  "name": "@nobrainer/lit-google-map",
   "version": "1.2.0",
   "description": "Google Maps web components based on Lit v2",
   "private": false,
   "license": "MIT",
   "author": {
-    "name": "Arkadiusz Wójcik",
-    "url": "http://github.com/arkadiuszwojcik"
+    "name": "Anders Nygren",
+    "email": "litemerafrukt@gmail.com",
+    "url": "http://github.com/litemerafrukt"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/arkadiuszwojcik/lit-google-map.git"
+    "url": "git+https://github.com/litemerafrukt/lit-google-map.git"
   },
   "keywords": [
     "map",
