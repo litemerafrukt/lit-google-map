@@ -86,6 +86,18 @@ export class LitGoogleMap extends LitElement {
 
     this.updateMarkers()
     this.updateShapes()
+    this.dispatchMapReadyEvent()
+  }
+
+  async dispatchMapReadyEvent() {
+    await this.updateComplete
+
+    this.dispatchEvent(
+      new CustomEvent("map-ready", {
+        detail: { map: this.map },
+        bubbles: true,
+      }),
+    )
   }
 
   getMapOptions(): google.maps.MapOptions {
