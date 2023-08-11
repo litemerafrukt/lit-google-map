@@ -27,12 +27,23 @@
 <body>
   <script src="../dist/lit-google-map.bundle.js"></script>
 
+  <script type="module">
+    const map = document.querySelector('lit-google-map');
+    map.addEventListener('map-ready', ({ detail: { map } }) => {
+      console.log('map-ready', map);
+      const bounds = new google.maps.LatLngBounds();
+      bounds.extend({ lat: 56, lng: 12 });
+      bounds.extend({ lat: 48, lng: 17 });
+      map.fitBounds(bounds)
+    });
+  </script>
+
   <div id="map-wrapper">
     <h3>
       Edit this html file and fill api-key map attribite for non developer
       mode map with all features
     </h3>
-    <lit-google-map api-key="" zoom="6" center-latitude="51.8436554" center-longitude="19.5070867">
+    <lit-google-map api-key="" zoom="6" center-latitude="51.8436554" center-longitude="19.5070867" disable-default-ui>
       <lit-google-map-marker slot="markers" latitude="49.4404582" longitude="20.2700361"
         icon="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png">
         <p>Lake Czorsztyn</p>

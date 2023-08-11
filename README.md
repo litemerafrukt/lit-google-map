@@ -1,5 +1,9 @@
 # lit-google-map
 
+2023-08-11:
+
+- Add "map-ready" event.
+
 2023-08-10:
 
 - Forked from [arkadiuszwojcik/lit-google-map](https://github.com/arkadiuszwojcik/lit-google-map)

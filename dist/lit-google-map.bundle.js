@@ -594,6 +594,14 @@
             this.map = new google.maps.Map(this.shadowRoot.getElementById("map"), this.getMapOptions());
             this.updateMarkers();
             this.updateShapes();
+            this.dispatchMapReadyEvent();
+        }
+        async dispatchMapReadyEvent() {
+            await this.updateComplete;
+            this.dispatchEvent(new CustomEvent("map-ready", {
+                detail: { map: this.map },
+                bubbles: true,
+            }));
         }
         getMapOptions() {
             return {
